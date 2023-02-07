@@ -66,6 +66,7 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
     })
 })
 
+// put request to update available lessons
 app.put('/collection/:collectionName/:id', (req, res, next) => {
     req.collection.updateOne(
         { _id: new ObjectID(req.params.id) },
@@ -76,6 +77,22 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
             res.send((result.modifiedCount === 1) ? { msg: 'success' } : { msg: 'error' })
         }
     )
+})
+
+// search
+app.get('/collection/:collectionName/search/:searchTerm', (req,res) => {
+    const { searchTerm } = req.params
+    req.collection.find({}).toArray((err,results) => {
+        if (err) return next(err)
+        const lessons = results.filter(lesson => {
+            return (
+                lesson.subject.toLowerCase().match(searchTerm.toLowerCase()) 
+                ||
+                lesson.location.toLowerCase().match(searchTerm.toLowerCase())
+            )
+        })
+        res.send(lessons)
+    }) 
 })
 
 // static file server middleware
