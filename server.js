@@ -29,9 +29,9 @@ app.use(function (req, res, next) {
     fs.stat(filePath, function (err, fileInfo) {
         if (err) {
             // Sets the status code to 404
-            res.status(404);
-            // Sends the error "File not found!”    
-            res.send("File not found!");
+            // res.status(404);
+            // // Sends the error "File not found!”    
+            // res.send("File not found!");
             next();
             return;
         }
@@ -107,3 +107,4 @@ app.delete('/collection/:collectionName/:id', (req, res, next) => {
 app.listen(3000, () => {
     console.log('App listening to port localhost:3000')
 })
+
