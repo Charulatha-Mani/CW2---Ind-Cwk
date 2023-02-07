@@ -74,7 +74,7 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
         { safe: true, multi: false },
         (e, result) => {
             if (e) return next(e)
-            res.send((result.modifiedCount === 1) ? { msg: 'success' } : { msg: 'error' })
+            res.send((result) ? { msg: 'success' } : { msg: 'error' })
         }
     )
 })
@@ -115,6 +115,22 @@ app.use(function(req,res){
     res.status(404)
     res.send("Error! Not found!")
 })
+
+/*
+app.use(function (req, response, next) {
+    var filePath = path.join(__dirname, "/..", req.url);
+    console.log(filePath);
+    fs.stat(filePath, function (error, fileInfo) {
+        if (error) {
+            response.send("This file does not exist.");
+            next();
+            return;
+        }
+        if (fileInfo.isFile()) response.sendFile(filePath);
+        else next();
+    });
+});
+*/
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000')
