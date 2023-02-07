@@ -21,25 +21,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-// static file server middleware
-app.use(function (req, res, next) {
-    // Uses path.join to find the path where the file should be
-    var filePath = path.join(__dirname, "images", req.url);
-    // Built-in fs.stat gets info about a file    
-    fs.stat(filePath, function (err, fileInfo) {
-        if (err) {
-            // Sets the status code to 404
-            // res.status(404);
-            // // Sends the error "File not found!”    
-            // res.send("File not found!");
-            next();
-            return;
-        }
-        if (fileInfo.isFile()) res.sendFile(filePath);
-        else next();
-    });
-});
-
 // connect to MongoDB
 const MongoClient = require('mongodb').MongoClient;
 let db;
@@ -59,6 +40,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
     return next()
 })
 
+// get all the lessons form the lessons collection
 app.get('/collection/:collectionName', (req, res, next) => {
     req.collection.find({}).toArray((e, results) => {
         if (e) return next(e)
@@ -66,6 +48,7 @@ app.get('/collection/:collectionName', (req, res, next) => {
     })
 })
 
+// post order to order collection
 app.post('/collection/:collectionName', (req, res, next) => {
     req.collection.insertOne(req.body, (e, results) => {
         if (e) return next(e)
@@ -74,6 +57,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
 })
 // ops is an object identifier
 
+// get lesson using id
 const ObjectID = require('mongodb').ObjectID;
 app.get('/collection/:collectionName/:id', (req, res, next) => {
     req.collection.findOne({ _id: new ObjectID(req.params.id) }, (e, result) => {
@@ -89,19 +73,30 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
         { safe: true, multi: false },
         (e, result) => {
             if (e) return next(e)
-            res.send((result) ? { msg: 'success' } : { msg: 'error' })
+            res.send((result.modifiedCount === 1) ? { msg: 'success' } : { msg: 'error' })
         }
     )
 })
 
-app.delete('/collection/:collectionName/:id', (req, res, next) => {
-    req.collection.deleteOne(
-        { _id: ObjectID(req.params.id) },
-        (e, result) => {
-            if (e) return next(e)
-            res.send((result) ? { msg: 'success' } : { msg: 'error' })
+// static file server middleware
+app.use(function (req, res, next) {
+    // Uses path.join to find the path where the file should be
+    var filePath = path.join(__dirname, "images", req.url);
+    // Built-in fs.stat gets info about a file    
+    fs.stat(filePath, function (err, fileInfo) {
+        if (err) {
+            next();
+            return;
         }
-    )
+        if (fileInfo.isFile()) res.sendFile(filePath);
+        else next();
+    });
+});
+
+// middleware error handler
+app.use(function(req,res){
+    res.status(404)
+    res.send("Error! Not found!")
 })
 
 app.listen(3000, () => {

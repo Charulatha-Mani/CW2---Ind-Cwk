@@ -449,13 +449,23 @@
         created: function () {
           // this function will be run automatically
           // when creating the Vue instance
-          fetch("http://localhost:3000/collection/lessons").then(function (response) {
+          fetch("http://localhost:3000/collection/lessons").then(function (
+            response
+          ) {
             response.json().then(function (json) {
               // save the returned JSON object to 'school.lessons';
               webstore.lessons = json;
               console.log(json);
             });
           });
+
+          // fetch("http://localhost:3000/collection/order").then((response) => response.json())
+          //   .then((responseData) => {
+          //     console.log(responseData);
+          //   })
+          //   .catch((error) => {
+          //     console.log(error);
+          //   });
         },
         methods: {
           // Adds the product id to cart and decreases a space by 1
