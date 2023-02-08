@@ -2,12 +2,14 @@
 const express = require('express');
 var path = require('path');
 var fs = require('fs');
+var cors = require('cors')
 
 // Create an server.js instance
 const app = express();
 
 // config Express.js
 app.use(express.json())
+app.use(cors());
 app.set('port', 3000)
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -55,6 +57,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
         res.send(results.ops)
     })
 })
+
 // ops is an object identifier
 
 // get lesson using id
@@ -66,23 +69,22 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
     })
 })
 
-// put request to update available lessons
-app.put('/collection/:collectionName/:id', (req, res, next) => {
+app.put("/collection/:collectionName/:id", (req, res, next) => {
     req.collection.updateOne(
-        { _id: new ObjectID(req.params.id) },
-        { $set: req.body },
-        { safe: true, multi: false },
-        (e, result) => {
-            if (e) return next(e)
-            res.send((result) ? { msg: 'success' } : { msg: 'error' })
-        }
-    )
-})
+      { _id: new ObjectID(req.params.id) },
+      { $set: req.body },
+      { safe: true, multi: false },
+      (e, result) => {
+        if (e) return next(e);
+        res.send(result.modifiedCount === 1 ? { msg: "success" } : { msg: "error" });
+      }
+    );
+  });
 
-// search
-app.get('/collection/:collectionName/search/:searchTerm', (req,res) => {
+//  Search
+  app.get('/collection/:collectionName/search/:searchTerm', (req,res) => {
     const { searchTerm } = req.params
-    req.collection.find({}).toArray((err,results) => {
+    req.collection.findAll({}).toArray((err,results) => {
         if (err) return next(err)
         const lessons = results.filter(lesson => {
             return (
@@ -94,6 +96,7 @@ app.get('/collection/:collectionName/search/:searchTerm', (req,res) => {
         res.send(lessons)
     }) 
 })
+  
 
 // static file server middleware
 app.use(function (req, res, next) {
@@ -135,3 +138,5 @@ app.use(function (req, response, next) {
 app.listen(3000, () => {
     console.log('Server listening on port 3000')
 })
+
+// how to search using GET in mongodb?

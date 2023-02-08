@@ -109,7 +109,7 @@
 
         <!-- Displays products that match the search criteria if the search field is not empty -->
         <div v-if="searchTerm !== ''">
-          <div v-for="lesson in searchField" id="subject-div" class="lesson">
+          <div v-for="lesson in searched_lessons" id="subject-div" class="lesson" :key="lessons.id">
             <img
               class="lessonImage"
               v-bind:src="lesson.image"
@@ -446,6 +446,7 @@
           lessonButton: "<i class='fas fa-plus'></i> Add to cart",
           // lessons from lessons collection
           lessons: {},
+          searched_lessons:[],
           inCartButton: "Remove",
         },
         created: function () {
@@ -674,17 +675,17 @@
           // },
           searchField: function() {
             var search=this.searchTerm.toLowerCase()
-            console.log(this.searchInput);
+            console.log(this.searchTerm);
             var searchresults=[];
             
-            if(this.searchInput!=''){
+            if(this.searchTerm!=''){
                 fetch("http://localhost:3000/collection/lessons/"+search).then(function (
                 response
               ) {
                 response.json().then(function (json) {
                   // save the returned JSON object to 'school.lessons';
                   
-                  webstore.lessons = JSON.parse(JSON.stringify(json));
+                  webstore.searched_lessons = JSON.parse(JSON.stringify(json));
                   searchresults.push(json);
                   console.log(json)
                   return json;
