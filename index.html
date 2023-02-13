@@ -108,8 +108,29 @@
         </div>
 
         <!-- Displays products that match the search criteria if the search field is not empty -->
-        <div v-if="searchTerm !== ''">
-          <div v-for="lesson in searchField" id="subject-div" class="lesson">
+        <div v-if="searchTerm != ''">
+          <div v-for="lesson in searched_lessons" id="subject-div" class="lesson" :key="lessons.id">
+            <img
+              class="lessonImage"
+              v-bind:src="lesson.image"
+              height="40"
+              width="40"
+            />
+            <h2>Subject: {{lesson.subject}}</h2>
+            <p>Location: {{lesson.location}}</p>
+            <p>Price: AED {{lesson.price}}</p>
+            <p>Spaces available: {{lesson.spaces}}</p>
+            <button
+              id="cart-btn"
+              v-html="lessonButton"
+              v-on:click="addToCart(lesson)"
+              v-if="canAdd(lesson)"
+            ></button>
+            <button v-html="lessonButton" disabled v-else></button>
+          </div>
+        </div>
+        <div v-else-if="searchTerm == ''">
+          <div v-for="lesson in lessons" id="subject-div" class="lesson" :key="lessons.id">
             <img
               class="lessonImage"
               v-bind:src="lesson.image"
@@ -446,6 +467,7 @@
           lessonButton: "<i class='fas fa-plus'></i> Add to cart",
           // lessons from lessons collection
           lessons: {},
+          searched_lessons:[],
           inCartButton: "Remove",
         },
         created: function () {
@@ -509,8 +531,8 @@
               this.order.phoneNo,
               this.cart
             );
-            this.updateSpaceMdb();
-            location.reload();
+            this.updateSpaceMdb(this.cart);
+            // location.reload();
           },
           // Removes the product id from the array and increases the space of the product if it exists in the array in the first place
           removeFromCart(lesson) {
@@ -535,7 +557,7 @@
               .then((response) => response.text())
               .then((responseJSON) => {
                 updateSpaceMdb(items);
-                location.reload();
+                // location.reload();
               });
           },
           updateSpaceMdb(lessons) {
@@ -673,18 +695,18 @@
           //   });
           // },
           searchField: function() {
-            var search=this.searchTerm.toLowerCase()
-            console.log(this.searchInput);
+            var search = this.searchTerm.toLowerCase()
+            console.log(this.searchTerm);
             var searchresults=[];
             
-            if(this.searchInput!=''){
+            if(this.searchTerm!=''){
                 fetch("http://localhost:3000/collection/lessons/"+search).then(function (
                 response
               ) {
                 response.json().then(function (json) {
                   // save the returned JSON object to 'school.lessons';
                   
-                  webstore.lessons = JSON.parse(JSON.stringify(json));
+                  webstore.searched_lessons = JSON.parse(JSON.stringify(json));
                   searchresults.push(json);
                   console.log(json)
                   return json;

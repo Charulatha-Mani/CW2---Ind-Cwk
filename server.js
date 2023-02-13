@@ -18,8 +18,7 @@ app.use((req, res, next) => {
 
 // logger middleware
 app.use(function (req, res, next) {
-    console.log("Request IP: " + req.url);
-    console.log("Request date: " + new Date());
+    console.log("Request IP: " + req.method + " request to: " + req.url);
     next();
 });
 
@@ -59,7 +58,39 @@ app.post('/collection/:collectionName', (req, res, next) => {
 })
 
 // ops is an object identifier
-
+app.get(
+    "/collection/:collectionName/:search",
+    (req, res, next) => {
+      console.log(req.params.search);
+      // finding the objects using $or (or) condition with subject or location
+      // using $regex to cgeck if a object contains the specific string or character
+      // $options=i to check the Case insensitivity
+      req.collection
+        .find({
+          $or: [
+            {
+              subject: {
+                $regex: "^" + req.params.search,
+                $options: "i",
+              },
+            },
+            {
+              location: {
+                $regex: "^" + req.params.search,
+                $options: "i",
+              },
+            },
+          ],
+        })
+        .toArray((e, results) => {
+          if (e) return next(e);
+          console.log(results);
+          res.send(JSON.parse(JSON.stringify(results)));
+        });
+    }
+  );
+  
+  
 // get lesson using id
 const ObjectID = require('mongodb').ObjectID;
 app.get('/collection/:collectionName/:id', (req, res, next) => {
@@ -82,26 +113,12 @@ app.put("/collection/:collectionName/:id", (req, res, next) => {
   });
 
 //  Search
-  app.get('/collection/:collectionName/search/:searchTerm', (req,res) => {
-    const { searchTerm } = req.params
-    req.collection.findAll({}).toArray((err,results) => {
-        if (err) return next(err)
-        const lessons = results.filter(lesson => {
-            return (
-                lesson.subject.toLowerCase().match(searchTerm.toLowerCase()) 
-                ||
-                lesson.location.toLowerCase().match(searchTerm.toLowerCase())
-            )
-        })
-        res.send(lessons)
-    }) 
-})
-  
+
 
 // static file server middleware
 app.use(function (req, res, next) {
     // Uses path.join to find the path where the file should be
-    var filePath = path.join(__dirname, "images", req.url);
+    var filePath = path.join(__dirname, "assets", req.url);
     // Built-in fs.stat gets info about a file    
     fs.stat(filePath, function (err, fileInfo) {
         if (err) {
@@ -139,4 +156,32 @@ app.listen(3000, () => {
     console.log('Server listening on port 3000')
 })
 
-// how to search using GET in mongodb?
+// how to search using express.js and mongodb?
+// search a product by name
+// productRoute.get('/getproduct/:name', async (req,res) => {
+//     try {
+//         const findname = req.params.name;
+//         const objs = await Product.find({productName:{ $regex:'.*'+findname+'.*'} });
+//         res.json(objs);
+//     } catch (error) {
+//         res.json({message: error});        
+//     }
+// })
+
+
+// [ { _id: 5f79,
+//     productName: 'Test-image12345',
+//     price: 60,
+//     details: 'Test product' },
+//   { _id: 5f7d,
+//     productName: 'Test-image1234',
+//     price: 60,
+//     details: 'Test product'}
+// ]
+
+
+
+
+//Source: https://stackoverflow.com/questions/64287536
+
+
