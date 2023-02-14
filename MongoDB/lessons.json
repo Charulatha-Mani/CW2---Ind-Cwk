@@ -1,0 +1,91 @@
+[{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620d5"
+  },
+  "image": "images/math.png",
+  "subject": "Math",
+  "location": "London",
+  "price": 100,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620d6"
+  },
+  "image": "images/english.png",
+  "subject": "English",
+  "location": "London",
+  "price": 100,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620d7"
+  },
+  "image": "images/music.png",
+  "subject": "Music",
+  "location": "Bristol",
+  "price": 90,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620d8"
+  },
+  "image": "images/iot.png",
+  "subject": "IoT",
+  "location": "York",
+  "price": 80,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620d9"
+  },
+  "image": "images/french.png",
+  "subject": "French",
+  "location": "Orland",
+  "price": 100,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620da"
+  },
+  "image": "images/physics.png",
+  "subject": "Physics",
+  "location": "UAE",
+  "price": 450,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620db"
+  },
+  "image": "images/mass-media.png",
+  "subject": "Mass Media",
+  "location": "India",
+  "price": 1000,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620dc"
+  },
+  "image": "images/marketing.png",
+  "subject": "Marketing",
+  "location": "France",
+  "price": 50,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620dd"
+  },
+  "image": "images/cybersecurity.png",
+  "subject": "Cybersecurity",
+  "location": "UAE",
+  "price": 300,
+  "spaces": 5
+},{
+  "_id": {
+    "$oid": "63e118fd8602d4e295a620de"
+  },
+  "image": "images/psychology.png",
+  "subject": "Psychology",
+  "location": "Greek",
+  "price": 800,
+  "spaces": 5
+}]

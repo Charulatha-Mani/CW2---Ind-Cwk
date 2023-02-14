@@ -1,0 +1,35 @@
+[{
+  "_id": {
+    "$oid": "63e3a1b4921e068e71ec2a4a"
+  },
+  "fname": "Syn",
+  "lname": "Salamander",
+  "phone": "0576849383",
+  "lessonId": [
+    "63e118fd8602d4e295a620d6"
+  ]
+},{
+  "_id": {
+    "$oid": "63e3a1de921e068e71ec2a4b"
+  },
+  "fname": "Nuer",
+  "lname": "Love",
+  "phone": "0587906854",
+  "lessonId": [
+    "63e118fd8602d4e295a620d7",
+    "63e118fd8602d4e295a620d6",
+    "63e118fd8602d4e295a620da",
+    "63e118fd8602d4e295a620d9",
+    "63e118fd8602d4e295a620d7"
+  ]
+},{
+  "_id": {
+    "$oid": "63eb263ed6176e394c447092"
+  },
+  "fname": "adora",
+  "lname": "Fer",
+  "phone": "0588888888",
+  "lessonId": [
+    "63e118fd8602d4e295a620dd"
+  ]
+}]
