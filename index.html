@@ -544,6 +544,7 @@
             }
             lesson.spaces++;
           },
+          // Adds the order information into the backend
           addOrderToMdb(firstName, lastName, phoneNo, items) {
             let orderInfo = {
               fname: firstName,
@@ -562,41 +563,15 @@
               });
               console.log(items)
           },
-          updateSpaceMdb(cart) {
-            // const upLessons = [];
-            // for (i = 0; i < lessons.length; i++) {
-            //   // console.log(lessons);
-            //   if (lessons.length === 0) {
-            //     const err = "Cannot do it";
-            //   } else {
-            //     const less_items = {
-            //       id: lessons[i]._id,
-            //       spaces: lessons[i].spaces,
-            //     };
-            //     // console.log(less_items);
-            //     console.log(lessons[i]._id)
-
-            //     fetch("http://localhost:3000/collection/lessons/" + lessons[i]._id, {
-            //         method: "PUT",
-            //         headers: {
-            //           "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify({ spaces: lessons[i].spaces }),
-            //       }).then((response) => response.json()).then((responseJSON) => {
-            //         // console.log(orderData);
-            //         console.log("lol")
-            //       });
-            //   }
-            // }
+          // Updates the spaces of available lessons when an order is placed
+          updateSpaceMdb(lessons) {
             fetch('collection/lessons', {
               method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify(this.cart)
-            })
-            
-            // console.log(updateSpaceMdb)
+            })            
           },
         },
         computed: {
@@ -687,25 +662,7 @@
             }
             return this.lessons.sort(compare);
           },
-          // Uses a lambda function to check whether the search term inputted is included in
-          // The product name, location, price or spaces.  It is not case sensitive
-          // searchField() {
-          //   return this.lessons.filter((lesson) => {
-          //     return (
-          //       lesson.subject
-          //         .toLowerCase()
-          //         .includes(this.searchTerm.toLowerCase()) ||
-          //       lesson.location
-          //         .toLowerCase()
-          //         .includes(this.searchTerm.toLowerCase()) ||
-          //       // For the data saved as integers, they get cast to String which lets it match any typed numbers
-          //       lesson.price
-          //         .toString()
-          //         .includes(this.searchTerm.toLowerCase()) ||
-          //       lesson.spaces.toString().includes(this.searchTerm.toLowerCase())
-          //     );
-          //   });
-          // },
+          // Searches the term from the search field in the backend
           searchField: function() {
             var search = this.searchTerm.toLowerCase()
             console.log(this.searchTerm);

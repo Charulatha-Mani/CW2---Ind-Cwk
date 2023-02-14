@@ -60,6 +60,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
 })
 
 // ops is an object identifier
+//  Search
 app.get(
     "/collection/:collectionName/:search",
     (req, res, next) => {
@@ -102,17 +103,8 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
     })
 })
 
+// Updates the backend when an order is placed
 app.put("/collection/:collectionName", (req, res, next) => {
-    // req.collection.update(
-    //   { _id: new ObjectID(req.params.id) },
-    //   { $set: req.body },
-    //   { safe: true, multi: false },
-    //   (e, result) => {
-    //     if (e) return next(e);
-    //     console.log(req.body)
-    //     res.send(result.modifiedCount === 1 ? { msg: "success" } : { msg: "error" });
-    //   }
-    // );
     req.body.forEach(lesson => {
       const lessonId = {_id: new ObjectID(lesson._id)};
       const upSpaces = {$set: {spaces: lesson.spaces}};
@@ -127,31 +119,9 @@ app.put("/collection/:collectionName", (req, res, next) => {
     });
   });
 
-//  Search
 
 
 // static file server middleware
-// app.use(function (req, res, next) {
-//     // Uses path.join to find the path where the file should be
-//     var filePath = path.join(__dirname, "assets", req.url);
-//     // Built-in fs.stat gets info about a file    
-//     fs.stat(filePath, function (err, fileInfo) {
-//         if (err) {
-//             next();
-//             return;
-//         }
-//         if (fileInfo.isFile()) res.sendFile(filePath);
-//         else next();
-//     });
-// });
-
-// // middleware error handler
-// app.use(function(req,res){
-//     res.status(404)
-//     res.send("Error! Not found!")
-// })
-
-
 app.use(function (req, response, next) {
     var filePath = path.join(__dirname, "assets", req.url);
     console.log(filePath);
@@ -170,33 +140,3 @@ app.use(function (req, response, next) {
 app.listen(3000, () => {
     console.log('Server listening on port 3000')
 })
-
-// how to search using express.js and mongodb?
-// search a product by name
-// productRoute.get('/getproduct/:name', async (req,res) => {
-//     try {
-//         const findname = req.params.name;
-//         const objs = await Product.find({productName:{ $regex:'.*'+findname+'.*'} });
-//         res.json(objs);
-//     } catch (error) {
-//         res.json({message: error});        
-//     }
-// })
-
-
-// [ { _id: 5f79,
-//     productName: 'Test-image12345',
-//     price: 60,
-//     details: 'Test product' },
-//   { _id: 5f7d,
-//     productName: 'Test-image1234',
-//     price: 60,
-//     details: 'Test product'}
-// ]
-
-
-
-
-//Source: https://stackoverflow.com/questions/64287536
-
-
