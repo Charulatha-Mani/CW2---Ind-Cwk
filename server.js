@@ -116,33 +116,33 @@ app.put("/collection/:collectionName/:id", (req, res, next) => {
 
 
 // static file server middleware
-app.use(function (req, res, next) {
-    // Uses path.join to find the path where the file should be
-    var filePath = path.join(__dirname, "assets", req.url);
-    // Built-in fs.stat gets info about a file    
-    fs.stat(filePath, function (err, fileInfo) {
-        if (err) {
-            next();
-            return;
-        }
-        if (fileInfo.isFile()) res.sendFile(filePath);
-        else next();
-    });
-});
+// app.use(function (req, res, next) {
+//     // Uses path.join to find the path where the file should be
+//     var filePath = path.join(__dirname, "assets", req.url);
+//     // Built-in fs.stat gets info about a file    
+//     fs.stat(filePath, function (err, fileInfo) {
+//         if (err) {
+//             next();
+//             return;
+//         }
+//         if (fileInfo.isFile()) res.sendFile(filePath);
+//         else next();
+//     });
+// });
 
-// middleware error handler
-app.use(function(req,res){
-    res.status(404)
-    res.send("Error! Not found!")
-})
+// // middleware error handler
+// app.use(function(req,res){
+//     res.status(404)
+//     res.send("Error! Not found!")
+// })
 
-/*
+
 app.use(function (req, response, next) {
-    var filePath = path.join(__dirname, "/..", req.url);
+    var filePath = path.join(__dirname, "assets", req.url);
     console.log(filePath);
     fs.stat(filePath, function (error, fileInfo) {
         if (error) {
-            response.send("This file does not exist.");
+            response.send("Error! This file does not exist.");
             next();
             return;
         }
@@ -150,7 +150,7 @@ app.use(function (req, response, next) {
         else next();
     });
 });
-*/
+
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000')
