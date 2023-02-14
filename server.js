@@ -2,7 +2,9 @@
 const express = require('express');
 var path = require('path');
 var fs = require('fs');
-var cors = require('cors')
+var cors = require('cors');
+const { ObjectId } = require('mongodb');
+const { transferableAbortSignal } = require('util');
 
 // Create an server.js instance
 const app = express();
@@ -100,16 +102,29 @@ app.get('/collection/:collectionName/:id', (req, res, next) => {
     })
 })
 
-app.put("/collection/:collectionName/:id", (req, res, next) => {
-    req.collection.updateOne(
-      { _id: new ObjectID(req.params.id) },
-      { $set: req.body },
-      { safe: true, multi: false },
-      (e, result) => {
-        if (e) return next(e);
-        res.send(result.modifiedCount === 1 ? { msg: "success" } : { msg: "error" });
-      }
-    );
+app.put("/collection/:collectionName", (req, res, next) => {
+    // req.collection.update(
+    //   { _id: new ObjectID(req.params.id) },
+    //   { $set: req.body },
+    //   { safe: true, multi: false },
+    //   (e, result) => {
+    //     if (e) return next(e);
+    //     console.log(req.body)
+    //     res.send(result.modifiedCount === 1 ? { msg: "success" } : { msg: "error" });
+    //   }
+    // );
+    req.body.forEach(lesson => {
+      const lessonId = {_id: new ObjectID(lesson._id)};
+      const upSpaces = {$set: {spaces: lesson.spaces}};
+      req.collection.updateOne(
+        lessonId,
+        upSpaces,
+        { safe: true, multi: false },
+        (err, result) => {
+          if(err) return next(err);
+        }
+      )
+    });
   });
 
 //  Search

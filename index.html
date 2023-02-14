@@ -523,7 +523,8 @@
             }
           },
           // When the button is clicked sends out an alert and refreshes the page
-          placeOrder() {
+          placeOrder(event) {
+            event.preventDefault();
             alert("Order Placed!");
             this.addOrderToMdb(
               this.order.firstName,
@@ -532,6 +533,7 @@
               this.cart
             );
             this.updateSpaceMdb(this.cart);
+
             // location.reload();
           },
           // Removes the product id from the array and increases the space of the product if it exists in the array in the first place
@@ -557,33 +559,43 @@
               .then((response) => response.text())
               .then((responseJSON) => {
                 updateSpaceMdb(items);
-                // location.reload();
               });
+              console.log(items)
           },
-          updateSpaceMdb(lessons) {
-            const upLessons = [];
-            for (i = 0; i < lessons.length; i++) {
-              // console.log(lessons);
-              if (lessons.length === 0) {
-                const err = "Cannot do it";
-              } else {
-                const less_items = {
-                  _id: lessons[i]._id,
-                  spaces: lessons[i].spaces,
-                };
-                // console.log(less_items);
+          updateSpaceMdb(cart) {
+            // const upLessons = [];
+            // for (i = 0; i < lessons.length; i++) {
+            //   // console.log(lessons);
+            //   if (lessons.length === 0) {
+            //     const err = "Cannot do it";
+            //   } else {
+            //     const less_items = {
+            //       id: lessons[i]._id,
+            //       spaces: lessons[i].spaces,
+            //     };
+            //     // console.log(less_items);
+            //     console.log(lessons[i]._id)
 
-                fetch("http://localhost:3000/collection/lessons/" + lessons[i]._id, {
-                    method: "PUT",
+            //     fetch("http://localhost:3000/collection/lessons/" + lessons[i]._id, {
+            //         method: "PUT",
+            //         headers: {
+            //           "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify({ spaces: lessons[i].spaces }),
+            //       }).then((response) => response.json()).then((responseJSON) => {
+            //         // console.log(orderData);
+            //         console.log("lol")
+            //       });
+            //   }
+            // }
+            fetch('collection/lessons', {
+              method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ "spaces": lessons[i].spaces }),
-                  }).then((response) => response.json()).then((responseJSON) => {
-                    // console.log(orderData);
-                  });
-              }
-            }
+                    body: JSON.stringify(this.cart)
+            })
+            
             // console.log(updateSpaceMdb)
           },
         },
